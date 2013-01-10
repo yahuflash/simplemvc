@@ -13,3 +13,4 @@ bin-release/
 .project
 .actionScriptProperties
 .gitignore
+.flexLibProperties
