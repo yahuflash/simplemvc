@@ -1,7 +1,6 @@
 package us.sban.simplemvc.service.proxy
 {
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
@@ -9,7 +8,7 @@ package us.sban.simplemvc.service.proxy
 	import flash.utils.ByteArray;
 	
 	import us.sban.simplemvc.core.IDisposable;
-	import us.sban.simplemvc.core.SimpleEvent;
+	import us.sban.simplemvc.core.SimpleEventDispatcher;
 	
 	
 	/**
@@ -22,7 +21,7 @@ package us.sban.simplemvc.service.proxy
 	 * @author sban
 	 * 
 	 */	
-	public class SocketProxy extends EventDispatcher implements IDisposable
+	public final class SocketProxy extends SimpleEventDispatcher implements IDisposable
 	{
 		public static const SOCKET_DATA="socketData";
 		
@@ -123,20 +122,20 @@ package us.sban.simplemvc.service.proxy
 				case IOErrorEvent.IO_ERROR:
 				case SecurityErrorEvent.SECURITY_ERROR:
 				{
-					this.dispatchEvent(e);
+					this.dispatchSimpleEventWith(e.type);
 					break;
 				}
 				case Event.CONNECT:
 				{
 					_connected = true;
-					this.dispatchEvent(e);
+					this.dispatchSimpleEventWith(e.type);
 					//new SimpleEvent(SimpleEvent.CONNECT).dispatch(this);
 					break;
 				}
 				case Event.CLOSE:
 				{
 					_connected = false;
-					this.dispatchEvent(e);
+					this.dispatchSimpleEventWith(e.type);
 					break;
 				}
 				case ProgressEvent.SOCKET_DATA:
@@ -305,7 +304,7 @@ package us.sban.simplemvc.service.proxy
 						this.bytesBuffer.clear();
 					}
 					
-					dispatchEvent( (new SimpleEvent().setType(SOCKET_DATA).setArgs([mid, bytes])).asNativeEvent() );
+					dispatchSimpleEventWith(SOCKET_DATA,mid,bytes);
 					
 					if(haveRemainBytes)
 						checkReceivedData();

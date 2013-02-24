@@ -64,9 +64,5 @@ package us.sban.simplemvc.core
 			this._type = type;
 			return this;
 		}
-		
-		public function asNativeEvent():SimpleNativeEvent{
-			return new SimpleNativeEvent(_type).setArgs(_args);
-		}
 	}
 }
