@@ -11,17 +11,16 @@ package us.sban.simplemvc.util
 	public final class DisplayUtil
 	{
 		/**
-		 * 将静态的矢量对象转换为位置对象，删除原对象，在原位置插入静态位图
-		 *  
+		 * convert displayObject to bitmapData 
 		 * @param object
 		 * @param appScale
-		 * @param stage
+		 * @return 
 		 * 
 		 */		
-		public static function convertVectorToBitmap(object:DisplayObject,appScale:Number,stage:Stage):void
+		public static function convertDisplayObjectToBitmap(object:DisplayObject,appScale:Number=1):BitmapData
 		{
 			// the original object's size (won't include glow effects!)
-			var objectBounds:Rectangle = object.getBounds(object);
+			var objectBounds:Rectangle= object.getBounds(object);
 			objectBounds.x *= object.scaleX;
 			objectBounds.y *= object.scaleY;
 			objectBounds.width *= object.scaleX;
@@ -41,11 +40,29 @@ package us.sban.simplemvc.util
 			matrix.translate(-scaledBounds.x, -scaledBounds.y);
 			
 			// briefly increase stage quality while creating bitmapData
-			stage.quality = StageQuality.HIGH;
-			var bitmapData:BitmapData = new BitmapData(scaledBounds.width,
-				scaledBounds.height, true);
-			bitmapData.draw(object, matrix);
-			stage.quality = StageQuality.LOW;
+			var bitmapData:BitmapData = new BitmapData(scaledBounds.width, scaledBounds.height, true);
+			bitmapData.drawWithQuality(object, matrix,null,null,null,true,StageQuality.HIGH);
+			
+			return bitmapData;
+		}
+		
+		/**
+		 * 将静态的矢量对象转换为bitmap对象，删除原对象，在原位置插入静态位图
+		 *  
+		 * @param object
+		 * @param appScale
+		 * @param stage
+		 * 
+		 */		
+		public static function convertVectorToBitmap(object:DisplayObject,appScale:Number=1):void
+		{
+			var objectBounds:Rectangle = object.getBounds(object);
+			objectBounds.x *= object.scaleX;
+			objectBounds.y *= object.scaleY;
+			objectBounds.width *= object.scaleX;
+			objectBounds.height *= object.scaleY;
+			
+			var bitmapData:BitmapData = convertDisplayObjectToBitmap(object,appScale);
 			
 			// line up bitmap with the original object and replace it
 			var bitmap:Bitmap = new Bitmap(bitmapData);

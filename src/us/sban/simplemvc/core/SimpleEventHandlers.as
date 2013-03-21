@@ -78,11 +78,11 @@ package us.sban.simplemvc.core
 			
 			if (value == null)
 			{
-				target.removeSimpleEventListeners(name);
+				target.removeEventListeners(name);
 			}else if (value is Function)
 			{
-				target.removeSimpleEventListeners(name);
-				target.addSimpleEventListener(name, value);
+				target.removeEventListeners(name);
+				target.addEventListener(name, value);
 			} else if (value is int)
 			{
 				var abs:int = NumberUtil.abs(value);
@@ -93,9 +93,9 @@ package us.sban.simplemvc.core
 					if ( (abs & k) == k)
 					{
 						if(value > 0)
-							target.addSimpleEventListener(name, operatedFunctions[i]);
+							target.addEventListener(name, operatedFunctions[i]);
 						else
-							target.removeSimpleEventListener(name, operatedFunctions[i]);
+							target.removeEventListener(name, operatedFunctions[i]);
 					}
 				}
 				operatedFunctions.splice(0,operatedFunctions.length);
@@ -108,14 +108,14 @@ package us.sban.simplemvc.core
 		public function clear():SimpleEventHandlers
 		{
 			Function.prototype.valueOf = defaultValueOf;
-			target.removeSimpleEventListeners();
+			target.removeEventListeners();
 			return this;
 		}
 		
 		flash_proxy override function callProperty(name:*, ...args):*
 		{
 			Function.prototype.valueOf = defaultValueOf;
-			target.dispatchSimpleEventWith.apply(target, [name].concat(args));
+			target.dispatchEventWith.apply(target, [name].concat(args));
 		}
 	}
 }

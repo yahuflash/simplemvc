@@ -1,13 +1,15 @@
 package us.sban.simplemvc.core
 {
+	import starling.events.Event;
+
 	public interface ISimpleEventDispatcher extends ISimpleObject
 	{
 		function get eventHandlers():SimpleEventHandlers;
-		function addSimpleEventListener(type:String, listener:Function,priority:int=0):void;
-		function removeSimpleEventListener(type:String, listener:Function):void;
-		function removeSimpleEventListeners(type:String=null):void;
-		function dispatchSimpleEvent(event:SimpleEvent):void;
-		function dispatchSimpleEventWith(type:String, ...args):void;
-		function hasSimpleEventListener(type:String):Boolean;
+		function addEventListener(type:String,listener:Function):void;
+		function removeEventListener(type:String, listener:Function):void;
+		function removeEventListeners(type:String=null):void;
+		function dispatchEvent(event:Event):void;
+		function dispatchEventWith(type:String, bubbles:Boolean=false, data:Object=null):void;
+		function hasEventListener(type:String):Boolean;
 	}
 }

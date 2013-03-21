@@ -1,7 +1,7 @@
 package us.sban.simplemvc.core
 {
 	/**
-	 * 迭代器
+	 * array or vector iterator
 	 * 
 	 * @author sban
 	 * 

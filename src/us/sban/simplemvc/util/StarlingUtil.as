@@ -7,12 +7,17 @@ package us.sban.simplemvc.util
 
 	public final class StarlingUtil
 	{
+		/**
+		 * convert displayObject to starling texture 
+		 * @param sprite
+		 * @return 
+		 * 
+		 */		
 		public static function textureFromDisplayObject(sprite : DisplayObject):Texture
 		{
-			var buffer:BitmapData = new BitmapData(sprite.width, sprite.height, true, 0x000000); // draw the shape on the bitmap
-			buffer.draw(sprite);
+			var bd:BitmapData = DisplayUtil.convertDisplayObjectToBitmap(sprite);
 			// create a Texture out of the BitmapData
-			var texture:Texture = Texture.fromBitmapData(buffer);
+			var texture:Texture = Texture.fromBitmapData(bd);
 			return texture;
 		}
 		

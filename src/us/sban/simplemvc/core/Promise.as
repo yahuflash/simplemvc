@@ -79,7 +79,7 @@ package us.sban.simplemvc.core
 			// TODO Auto Generated method stub
 			var eventType :String = name.toString();
 			delete _data[eventType];
-			sed.removeSimpleEventListeners(eventType);
+			sed.removeEventListeners(eventType);
 			return true;
 		}
 		
@@ -109,11 +109,11 @@ package us.sban.simplemvc.core
 				{
 					fun.apply(null, [_data[eventType]]);
 				}else{
-					sed.addSimpleEventListener(eventType,
+					sed.addEventListener(eventType,
 						function(e :SimpleEvent):void
 						{
-							e.target.removeSimpleEventListener(e.type, arguments.callee);
-							_data[eventType] = e.args;
+							e.target.removeEventListener(e.type, arguments.callee);
+							_data[eventType] = e.data;
 							fun.apply(null, [_data[eventType]]);
 						}
 					);
@@ -121,7 +121,7 @@ package us.sban.simplemvc.core
 			}else{//如果无参数，直接派发事件
 				_data[eventType] = parameters[0];
 				//如果第1个参数是object，在激发事件时添加参数
-				sed.dispatchSimpleEventWith(eventType,parameters[0]);
+				sed.dispatchEventWith(eventType,parameters[0]);
 			}
 			
 			return this;

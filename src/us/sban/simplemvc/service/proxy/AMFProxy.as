@@ -59,7 +59,7 @@ package us.sban.simplemvc.service.proxy
 				function(data :Object):void
 				{
 					_connected = true;
-					dispatchSimpleEventWith(Event.CONNECT);
+					dispatchEventWith(Event.CONNECT);
 				}
 			));
 		}

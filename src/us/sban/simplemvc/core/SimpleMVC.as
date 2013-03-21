@@ -58,7 +58,6 @@ package us.sban.simplemvc.core
 			return bean;
 		}
 		
-		public function get application():ISimpleApplication{return SimpleApplication.application;}
-		public function get app():ISimpleApplication{return application;}
+		public const logger:SimpleLogger= new SimpleLogger();
 	}
 }

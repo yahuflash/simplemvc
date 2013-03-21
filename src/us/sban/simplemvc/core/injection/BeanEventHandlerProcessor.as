@@ -46,7 +46,7 @@ package us.sban.simplemvc.core.injection
 				return;
 
 			for each(var handler:EventHandler in handlers[bean.instance]){
-				$.globalDispatcher.removeSimpleEventListener(handler.type, handler.handleEvent);
+				$.globalDispatcher.removeEventListener(handler.type, handler.handleEvent);
 			}
 
 			handlers[bean] = [];
@@ -70,7 +70,7 @@ package us.sban.simplemvc.core.injection
 		{
 			var eventHandler:EventHandler = new EventHandler(event, handler, tag);
 
-			$.globalDispatcher.addSimpleEventListener(event, eventHandler.handleEvent);
+			$.globalDispatcher.addEventListener(event, eventHandler.handleEvent);
 
 			return eventHandler;
 		}

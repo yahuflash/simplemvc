@@ -122,20 +122,20 @@ package us.sban.simplemvc.service.proxy
 				case IOErrorEvent.IO_ERROR:
 				case SecurityErrorEvent.SECURITY_ERROR:
 				{
-					this.dispatchSimpleEventWith(e.type);
+					this.dispatchEventWith(e.type);
 					break;
 				}
 				case Event.CONNECT:
 				{
 					_connected = true;
-					this.dispatchSimpleEventWith(e.type);
+					this.dispatchEventWith(e.type);
 					//new SimpleEvent(SimpleEvent.CONNECT).dispatch(this);
 					break;
 				}
 				case Event.CLOSE:
 				{
 					_connected = false;
-					this.dispatchSimpleEventWith(e.type);
+					this.dispatchEventWith(e.type);
 					break;
 				}
 				case ProgressEvent.SOCKET_DATA:
@@ -304,7 +304,7 @@ package us.sban.simplemvc.service.proxy
 						this.bytesBuffer.clear();
 					}
 					
-					dispatchSimpleEventWith(SOCKET_DATA,mid,bytes);
+					dispatchEventWith(SOCKET_DATA,mid,bytes);
 					
 					if(haveRemainBytes)
 						checkReceivedData();

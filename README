@@ -10,5 +10,24 @@ SimpleMVC借鉴学习了以下框架，排名不先后：
 4,http://www.nshen.net/dataStructure/2011/08/25/AS3-DataStructure.html
 
 changelog:
-3.1 beta
+3.1beta
+-》add StarlingShape
+
+=================================================
+
+how to use png2atf(in adobe gaming sdk)
+-------------------------------------------------
+png2atf -c -i starling-atf.png -o starling.atf
+png2atf -c -e -i starling-atf.png -o starling.atf (empty mipmaps)
+png2atf -c p -i starling-atf.png -o starling.atf (only the PVRTC format, perfect for iOS)
+
+
+开发一款游戏的流程：
+-------------------------------------------------
+将素材资源放在src/assets目录下
+使用atf工具优化png图片（如果使用了纹理集，则方便了许多）
+
+
+
+
 
