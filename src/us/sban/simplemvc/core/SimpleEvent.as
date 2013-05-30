@@ -1,44 +1,22 @@
 package us.sban.simplemvc.core
 {
-	import starling.events.Event;
-
-	use namespace simplemvc_internal;
+	import flash.events.Event;
 	
-	public final class SimpleEvent extends Event implements ISimpleObject
+	/**
+	 * 需要与已有的as3项目兼容，而不仅是starling项目。
+	 * 1，提供对starling event的转换
+	 * 2，有对象池机制
+	 * 
+	 */
+	public final class SimpleEvent extends Event
 	{
-		/** Event type for a display object that is added to a parent. */
-		public static const ADDED:String = "added";
-		/** Event type for a display object that is removed from its parent. */
-		public static const REMOVED:String = "removed";
-		
-		public function SimpleEvent(type:String=null)
+		public function SimpleEvent(type:String, data:Object=null)
 		{
 			super(type);
+			if(data) _data = data;
 		}
 		
-		public function release():ISimpleObject{
-			return $.objects.pushReleased(this) as ISimpleObject;
-		}
-		
-		public function dispatchIn(target:ISimpleEventDispatcher):SimpleEvent{
-			target.dispatchEvent(this);
-			return this;
-		}
-		public function dispatchInGlobal():SimpleEvent{
-			$.globalDispatcher.dispatchEvent(this);
-			return this;
-		}
-		public function setType(value:String):SimpleEvent{
-			this.mType=value;
-			return this;
-		}
-		public function setBubbles(value:Boolean):SimpleEvent{
-			this.mBubbles=value;
-			return this;
-		}
-		public function setData(value:Object):SimpleEvent{
-			this.mData = value;
-			return this;
-		}
+		private var _data:Object={};
+		public function get data():Object{return _data;}
 	}
 }

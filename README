@@ -1,3 +1,13 @@
+目录的用途：
+1，在managers放置业务管理器，均为单例，名为sharedInstance
+2，在controls放置视图控制器，与cocos touch的控制器类似，是包括视图，代码逻辑的整合体
+3，在models中放置纯粹的数据模型类
+4，services中是一些与服务器进行数据交互的工具类
+
+
+
+
+================
 simplemvc是一个轻量级的，适用于手机、浏览器、桌面开发的，工具式敏捷开发MVCS框架。
 该框架由sban在2008年开发，曾名pawnshop。
 项目地址：blog.sban.us/simplemvc

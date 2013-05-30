@@ -9,12 +9,6 @@ package us.sban.simplemvc.view
 		public function StarlingScene()
 		{
 			super();
-			this.addEventListener(Event.ADDED_TO_STAGE,
-				function(e:Event):void{
-					e.currentTarget.removeEventListener(e.type, arguments.callee);
-					init();
-				}
-			);
 		}
 		
 		protected function get application():StarlingApplication{
@@ -27,8 +21,13 @@ package us.sban.simplemvc.view
 			return StarlingApplication.application.sceneNavigator;
 		}
 		
-		protected function init():void{
-			
+		protected function listen(type:String, callback:Function):void{
+			this.addEventListener(type,
+				function(e:Event):void{
+					e.currentTarget.removeEventListener(e.type, arguments.callee);
+					callback();
+				}
+			);
 		}
 	}
 }

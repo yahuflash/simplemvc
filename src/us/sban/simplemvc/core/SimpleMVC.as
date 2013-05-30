@@ -1,5 +1,8 @@
 package us.sban.simplemvc.core
 {
+	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
+	
 	import us.sban.simplemvc.core.injection.SimpleBean;
 	import us.sban.simplemvc.core.injection.SimpleInjection;
 	import us.sban.simplemvc.model.SimpleModel;
@@ -28,8 +31,8 @@ package us.sban.simplemvc.core
 		public function str(s:String):SimpleString{return string(s);}
 		public function number(n:Number):SimpleNumber{return objects.createNew(SimpleNumber).setValue(n);}
 		public function n(n:Number):SimpleNumber{return number(n);}
-		public function event(type:String):SimpleEvent{return objects.createNew(SimpleEvent).setType(type);}
-		public function e(type:String):SimpleEvent{return event(type);}
+		public function event(type:String):SimpleEvent2{return objects.createNew(SimpleEvent2).setType(type);}
+		public function e(type:String):SimpleEvent2{return event(type);}
 		public function f(f:Function):SimpleFunction{return objects.createNew(SimpleFunction).setValue(f);}
 		public function error(message:String):SimpleError{return objects.createNew(SimpleError).setMessage(message);}
 		public function err(message:String):SimpleError{return error(message);}
@@ -49,7 +52,8 @@ package us.sban.simplemvc.core
 		public function eventHandlers(target:ISimpleEventDispatcher):SimpleEventHandlers{
 			return ($.objects.createNew(SimpleEventHandlers) as SimpleEventHandlers).setTarget(target).open();
 		}
-		public const globalDispatcher:SimpleEventDispatcher = new SimpleEventDispatcher;
+		/**全局的事件派发、监听对象*/
+		public const globalDispatcher:IEventDispatcher = new EventDispatcher;
 		
 		public const injection:SimpleInjection = new SimpleInjection();
 		public function bean(instance:Object):SimpleBean{

@@ -110,7 +110,7 @@ package us.sban.simplemvc.core
 					fun.apply(null, [_data[eventType]]);
 				}else{
 					sed.addEventListener(eventType,
-						function(e :SimpleEvent):void
+						function(e :SimpleEvent2):void
 						{
 							e.target.removeEventListener(e.type, arguments.callee);
 							_data[eventType] = e.data;
