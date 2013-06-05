@@ -26,14 +26,18 @@ package simplemvc.command
 		override public function dispose():void
 		{
 			// TODO Auto Generated method stub
-			this.policy.dispose();
-			this.policy=null;
-			this.commands.forEach(
+			if(policy){
+				this.policy.dispose();
+				this.policy=null;
+			}
+			if(commands){
+				this.commands.forEach(
 					function(c :ICommand, index:int=-1, v :Vector.<ICommand>=null):void{
 						c.dispose();
 					}
 				);
-			this.commands=null;
+				this.commands=null;
+			}
 			super.dispose();
 		}
 		

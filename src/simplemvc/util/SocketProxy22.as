@@ -22,23 +22,6 @@ package simplemvc.util
 		/**2+2，包头是4个字节*/
 		public static const HEADER_SIZE:uint = 4;
 		
-		/**以java socket server test ok, 2013.05.16*/
-		public static function test():void{
-			var skt:SocketProxy22 = new SocketProxy22();
-			skt.addEventListener(Event.CONNECT,function(){
-				var b:ByteArray=new ByteArray();
-				b.writeByte(1);
-				skt.send22(1,b);
-			});
-			skt.addEventListener(SOCKET22_DATA,function(e:SimpleEvent){
-				var mid:int = e.args[0];
-				var b:ByteArray = e.args[1];
-				trace( mid );
-				trace( b.readShort() );
-			});
-			skt.connect("localhost",18083);
-		}
-		
 		public function SocketProxy22(useZlib:Boolean=false)
 		{
 			super(useZlib);

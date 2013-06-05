@@ -7,36 +7,6 @@ package simplemvc.event
 	
 	public class SimpleEventDispatcher extends EventDispatcher implements IDisposable
 	{
-		public static function test():void
-		{
-			var ged :SimpleEventDispatcher =GlobalEventDispatcher.sharedInstance();
-			ged.addEventListener("some",
-				function(e:SimpleEvent):void{
-					trace(e.type,e.args);
-				}
-			);
-			ged.addEventListener("some1",
-				function(e:SimpleEvent):void{
-					trace(e.type,e.args);
-				}
-			);
-			ged.addEventListener("some2",
-				function(e:SimpleEvent):void{
-					trace(e.type,e.args);
-				}
-			);
-			ged.dispatchSimpleEvent("some",1,2,3);
-			ged.dispatchSimpleEvent("some1",4,5,3);
-			ged.dispatchSimpleEvent("some2",9,7,3);
-			trace( ged.toString() );
-			ged.clearEventListeners();
-			trace( ged.toString() );
-			trace("clear=======================");
-			ged.dispatchSimpleEvent("some",1,2,3);
-			ged.dispatchSimpleEvent("some1",1,2,3);
-			ged.dispatchSimpleEvent("some2",1,2,3);
-		}
-		
 		public static function create():SimpleEventDispatcher{
 			return SimpleObjectPool.sharedInstance().pull(SimpleEventDispatcher) as SimpleEventDispatcher;
 		}

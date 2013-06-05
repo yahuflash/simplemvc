@@ -7,7 +7,7 @@ package simplemvc.command
 	 */	
 	public final class SerialCommand extends ComplexCommand
 	{
-		public function SerialCommand(...commands :Array)
+		public function SerialCommand(...commands)
 		{
 			super(new SerialPolicy(), commands);
 		}

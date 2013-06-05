@@ -2,6 +2,7 @@ package simplemvc.command
 {
 	import simplemvc.core.ICommand;
 	import simplemvc.core.Promise;
+	import simplemvc.event.SimpleEvent;
 	import simplemvc.event.SimpleEventDispatcher;
 	
 	/**
@@ -23,6 +24,10 @@ package simplemvc.command
 			// TODO Auto Generated method stub
 			if(promise) promise.dispose();
 			super.dispose();
+		}
+		
+		protected function setComplete():void{
+			promise.dispatchSimpleEvent( SimpleEvent.COMPLETE );
 		}
 	}
 }
