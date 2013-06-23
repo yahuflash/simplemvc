@@ -1,7 +1,6 @@
 package
 {
-	import us.sban.simplemvc.core.SimpleMVC;
-	public function get $():SimpleMVC{
-		return new SimpleMVC;
-	}
+	import simplemvc.common.SimpleMVC;
+
+	public var $:SimpleMVC = new SimpleMVC();
 }

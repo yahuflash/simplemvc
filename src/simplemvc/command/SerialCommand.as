@@ -1,15 +1,20 @@
 package simplemvc.command
 {
+	import simplemvc.common.ObjectPool;
+
 	/**
-	 * 串发 
-	 * @author Optimus.Li
+	 * 串发指令
+	 * @author sban
 	 * 
 	 */	
 	public final class SerialCommand extends ComplexCommand
 	{
-		public function SerialCommand(...commands)
-		{
-			super(new SerialPolicy(), commands);
+		/**strict如果为false，表示指令在cancel，complete时都可以继续向下执行*/
+		public static function create(commands :Array,strict:Boolean=true):SerialCommand{
+			var command:SerialCommand = ObjectPool.sharedObjectPool().retrieveNew(SerialCommand) as SerialCommand;
+			command.commands = new Vector.<SimpleCommand>(commands);
+			command.policy = SerialPolicy.create(strict);
+			return command;
 		}
 	}
 }

@@ -1,29 +1,37 @@
 package simplemvc.command
 {
-	import simplemvc.core.Promise;
-	import simplemvc.util.Iterator;
+	import simplemvc.common.IReusable;
+	import simplemvc.common.Iterator;
+	import simplemvc.common.ObjectPool;
 
-	public class CommandPolicy implements ICommandPolicy
+	/**
+	 * 复合指令执行策略
+	 * @author sban
+	 * 
+	 */	
+	public class CommandPolicy implements ICommandPolicy,IReusable
 	{
 		public function CommandPolicy(){}
 		
-		protected var numComplete :int=0;
-		protected var numTotal :int = 0;
+		protected var numComplete :int;
+		protected var numTotal :int;
 		protected var iterator :Iterator;
-		protected var promise:Promise;
+		protected var command:SimpleCommand;
+		internal var strict:Boolean = true;
 		
-		public function start(iterator:Iterator,promise:Promise):void{
+		public function start(withIterator :Iterator, withCommand:SimpleCommand):void
+		{
+			iterator = withIterator;
+			command = withCommand;
 			numComplete=0;
-			numTotal = iterator.count;
-			this.iterator = iterator;
-			this.promise = promise;
+			numTotal = iterator.numItems();
 		}
 		
-		public function dispose():void
+		public function release():void
 		{
 			// TODO Auto Generated method stub
-			promise=null;
-			iterator=null;
+			iterator.release();
+			ObjectPool.sharedObjectPool().pushReleased(this);
 		}
 		
 	}

@@ -1,39 +1,53 @@
 package simplemvc.event
 {
-	import flash.events.Event;
-	import flash.events.IEventDispatcher;
+	import simplemvc.common.IReusable;
+	import simplemvc.common.ObjectPool;
+	import simplemvc.common.simplemvc_internal;
+
+	use namespace simplemvc_internal;
 	
-	import simplemvc.core.IDisposable;
-	
-	public final class SimpleEvent extends Event implements IDisposable
-	{
-		public static const DISPOSE:String = "dispose";
-		public static const COMPLETE:String = "complete";
-		public static const FAIL:String = "fail";
+	public final class SimpleEvent implements IReusable{
 		
-		public static function create(type:String, ...args):SimpleEvent{
-			var r:SimpleEvent = new SimpleEvent(type);
-			r.args=args;
-			return r;
+		public static function create(type:String, args:Object=null):SimpleEvent{
+			return ObjectPool.sharedObjectPool().retrieveNew(SimpleEvent).init(type,args);
 		}
 		
-		public function SimpleEvent(type:String, ...args)
-		{
-			super(type);
-			this.args =args;
+		public function SimpleEvent(){}
+		
+		public var args :Object;
+		internal var target:SimpleDispatcher;
+		protected var type:String;
+		protected var stopsPropagation:Boolean;
+		
+		public function init(type:String,args:Object=null):SimpleEvent{
+			this.type=type;
+			this.args = args;
+			return this;
 		}
 		
-		public var args:Array;
+		public function getType():String{ return type;}
+		public function getTarget():SimpleDispatcher { return target; }
+		public function hasStoppedPropagation():Boolean { return stopsPropagation; }
 		
-		public function dispatch(target:IEventDispatcher=null):void{
-			(target ||= GlobalEventDispatcher.sharedInstance()).dispatchEvent(this);
+		public function stopPropagation():void { 
+			stopsPropagation=true; 
 		}
 		
-		public function dispose():void
-		{
-			// TODO Auto Generated method stub
-			
+		public function release():void{
+			target = null;
+			args = null;
+			ObjectPool.sharedObjectPool().pushReleased(this);
 		}
 		
+		public function dispatchInGlobal():void{
+			SimpleDispatcher.sharedSimpleDispatcher().dispatch(this);
+			release();
+		}
+		
+		public function dispatchInModule(moduleName:String):void{
+			DispatcherManager.sharedDispatcherManager().retrieveNew(moduleName)
+				.dispatch(this);
+			release();
+		}
 	}
 }

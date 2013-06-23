@@ -1,11 +1,13 @@
 package simplemvc.command
 {
-	import simplemvc.core.IDisposable;
-	import simplemvc.core.Promise;
-	import simplemvc.util.Iterator;
+	import simplemvc.common.Iterator;
 
-	public interface ICommandPolicy extends IDisposable
+	/**
+	 * 复合指令执行策略接口
+	 * @author sban
+	 */
+	public interface ICommandPolicy
 	{
-		function start(iterator:Iterator,promise:Promise):void;
+		function start(iterator :Iterator, c:SimpleCommand):void;
 	}
 }

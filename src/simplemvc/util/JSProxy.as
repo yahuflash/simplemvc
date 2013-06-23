@@ -5,7 +5,7 @@ package simplemvc.util
 	/**
 	 * 代理对js方法的调用与回调注册 
 	 * @author sban
-	 * 
+	 * fixed 2010/06/23
 	 */	
 	public class JSProxy
 	{

@@ -1,33 +1,37 @@
 package simplemvc.command
 {
-	import simplemvc.core.ICommand;
-	import simplemvc.core.Promise;
-	import simplemvc.event.SimpleEvent;
-	import simplemvc.event.SimpleEventDispatcher;
+	import simplemvc.common.IReusable;
+	import simplemvc.common.simplemvc_internal;
+	import simplemvc.event.SimpleDispatcher;
+	import simplemvc.common.IClonable;
 	
-	/**
-	 * 作为所有指令的基类，复杂或定制的命令继承于此
-	 */	
-	public class SimpleCommand extends SimpleEventDispatcher implements ICommand
-	{
-		public function SimpleCommand(){
-			super();
-		}
+	use namespace simplemvc_internal;
+	
+	public class SimpleCommand extends SimpleDispatcher implements ICommand,IClonable,IReusable{
 		
-		protected var promise:Promise;
+		//在子类中实现static create方法
 		
-		public function execute():Promise{
-			return (promise ||= Promise.create());
-		}
+		/**args:{}*/
+		public static const COMPLETE:String = "complete";
+		/**args:{}*/
+		public static const CANCEL:String = "cancel";
+		/**args:{}*/
+		public static const UNDO:String = "undo";
 		
-		override public function dispose():void{
-			// TODO Auto Generated method stub
-			if(promise) promise.dispose();
-			super.dispose();
-		}
+		public function SimpleCommand(){}
 		
-		protected function setComplete():void{
-			promise.dispatchSimpleEvent( SimpleEvent.COMPLETE );
+		/**别名于execute*/
+		public function redo():Object{return execute();}
+		virtual public function execute():Object{return this;}
+		
+		/**当成以后，不自动release，需手动调用*/
+		public function complete():Object{
+			dispatchWith(COMPLETE);
+			return this;
 		}
+		public function cancel():Object{dispatchWith(CANCEL);return this;}
+		public function undo():Object{dispatchWith(UNDO);return this;}
+		
+		public function clone():Object{return new SimpleCommand;}
 	}
 }

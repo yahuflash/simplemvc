@@ -1,33 +1,37 @@
 package simplemvc.command
 {
-	import simplemvc.core.ICommand;
-	import simplemvc.core.Promise;
-	import simplemvc.event.SimpleEvent;
-	import simplemvc.util.Iterator;
+	import simplemvc.common.Iterator;
+	import simplemvc.common.ObjectPool;
 
 	/**
 	 * 并发执行策略 
-	 * @author Optimus.Li
+	 * @author sban
 	 * 
 	 */	
 	public class ParallelPolicy extends CommandPolicy
 	{
-		public function ParallelPolicy(){}
+		public static function create(strict:Boolean):ParallelPolicy{
+			var policy:ParallelPolicy = ObjectPool.sharedObjectPool().retrieveNew(ParallelPolicy) as ParallelPolicy;
+			policy.strict=strict;
+			return policy;
+		}
 		
-		override public function start(iterator:Iterator,promise:Promise):void
-		{
+		override public function start(iterator :Iterator, promise:SimpleCommand):void{
 			super.start(iterator,promise);
-			var c :ICommand;
-			
 			while(iterator.hasNext()){
-				c = iterator.next() as ICommand;
-				c.execute().complete(command_onComplete);
+				(iterator.next().execute() as SimpleCommand).listenTo(SimpleCommand.COMPLETE, command_onComplete);
 			}
 		}
 		
-		protected function command_onComplete(...args):void{
-			if (++numComplete == numTotal){
-				promise.dispatchSimpleEvent(SimpleEvent.COMPLETE);
+		protected function command_onComplete():void{
+			if (strict){
+				if (++numComplete == numTotal){
+					command.complete();
+					command.release();
+				}
+			}else{
+				command.complete();
+				command.release();
 			}
 		}
 	}
