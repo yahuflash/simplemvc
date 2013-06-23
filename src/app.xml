@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<application>
+	<modules>
+		<module name="socket" definition="simplemvc.extension.socket::SocketModule">
+			<setting>
+				<type>2-2</type>
+				<host>127.0.0.1</host>
+				<port>9001</port>
+			</setting>
+			<events>
+				<event name="socketResponse">
+					<description>收到data数据时派发</description>
+				</event>
+				<event name="socketRequest">
+					<description>请求发送数据包</description>
+				</event>
+			</events>
+		</module>
+	</modules>
+</application>
