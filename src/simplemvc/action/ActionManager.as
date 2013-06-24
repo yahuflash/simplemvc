@@ -1,6 +1,7 @@
 package simplemvc.action
 {
 	import simplemvc.command.SimpleCommand;
+	import simplemvc.event.DispatcherManager;
 	import simplemvc.event.SimpleDispatcher;
 	import simplemvc.module.Module;
 
@@ -36,10 +37,11 @@ package simplemvc.action
 				actions.push( action );
 			}else if(action is RetrieveAction){
 				//如果是拉取动作，执行，在完成后回收
-				(action.execute() as SimpleCommand).listenTo(SimpleCommand.COMPLETE,function():void{
+				action.listenTo(SimpleCommand.COMPLETE,function():void{
 					remove(action);
-					action.release();					
+					action.release();
 				});
+				action.execute();
 				actions.push( action );
 			}
 		}

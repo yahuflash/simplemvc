@@ -1,7 +1,10 @@
 package simplemvc.action
 {
+	import flash.events.Event;
+	
 	import simplemvc.common.ObjectPool;
 	import simplemvc.event.DispatcherManager;
+	import simplemvc.event.SimpleEvent;
 
 	public final class RetrieveAction extends Action implements IAction{
 		public static function create(requestEventType:String
@@ -21,6 +24,7 @@ package simplemvc.action
 		}
 		
 		public function RetrieveAction(){}
+		
 		internal var requestEventType:String;
 		internal var requestArgs:Object;
 		internal var responseEventType:String;
@@ -31,13 +35,16 @@ package simplemvc.action
 			DispatcherManager.sharedDispatcherManager().retrieveNew(moduleName)
 				.dispatchWith(requestEventType,requestArgs);
 			DispatcherManager.sharedDispatcherManager().retrieveNew(moduleName)
-				.listenTo(responseEventType,responseListener,responsePriority);
+				.listenTo(responseEventType,function(data:Object,e:SimpleEvent):void{
+					var numArgs:int = responseListener.length;
+					if (numArgs == 0) responseListener();
+					else if (numArgs == 1) responseListener(e.args);
+					else if (numArgs == 2) responseListener(e.args,e);
+				},responsePriority);
 			return super.execute();
 		}
 		
 		override public function release():void{
-			DispatcherManager.sharedDispatcherManager().retrieveNew(moduleName)
-				.unlistenTo(responseEventType,responseListener);
 			responseListener=null;
 			super.release();
 		}

@@ -9,21 +9,18 @@ package simplemvc.event
 	public final class SimpleEvent implements IReusable{
 		
 		public static function create(type:String, args:Object=null):SimpleEvent{
-			return ObjectPool.sharedObjectPool().retrieveNew(SimpleEvent).init(type,args);
+			var e:SimpleEvent = ObjectPool.sharedObjectPool().retrieveNew(SimpleEvent) as SimpleEvent;
+			e.type = type;
+			e.args = args;
+			return e;
 		}
 		
 		public function SimpleEvent(){}
 		
 		public var args :Object;
 		internal var target:SimpleDispatcher;
-		protected var type:String;
-		protected var stopsPropagation:Boolean;
-		
-		public function init(type:String,args:Object=null):SimpleEvent{
-			this.type=type;
-			this.args = args;
-			return this;
-		}
+		internal var type:String;
+		internal var stopsPropagation:Boolean;
 		
 		public function getType():String{ return type;}
 		public function getTarget():SimpleDispatcher { return target; }

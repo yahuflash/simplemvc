@@ -53,8 +53,7 @@ package simplemvc.event
 		}
 		
 		/**xxx.complete(obj)*/
-		flash_proxy override function callProperty(name:*, ...args):*
-		{
+		flash_proxy override function callProperty(name:*, ...args):*{
 			dispatchWith(name.localName,(args.length > 0) ? args[0] : null);
 		}
         
@@ -63,11 +62,12 @@ package simplemvc.event
             if (eventListeners == null) eventListeners = new Dictionary();
             
             var listeners:Vector.<PriorityHandler> = eventListeners[type] as Vector.<PriorityHandler>;
-            if (listeners == null)
-				listeners = eventListeners[type] = new <PriorityHandler>[PriorityHandler.create(listener,priority)];
-            else if ( funcIndexInListeners(listener,listeners) < 0) // check for duplicates
+            if (listeners == null){
+				eventListeners[type] = new <PriorityHandler>[PriorityHandler.create(listener,priority)];
+			}else if ( funcIndexInListeners(listener,listeners) < 0) {
                 listeners.push(PriorityHandler.create(listener,priority));
-			listeners.sort(sortFuncOfListeners);
+				listeners.sort(sortFuncOfListeners);
+			}
         }
 		
 		public function listenTos(types:Array, listener:Function):void{
