@@ -33,7 +33,7 @@ package simplemvc.action
 			if(listener){
 				DispatcherManager.sharedDispatcherManager().retrieveNew(moduleName)
 					.unlistenTo(eventType,listener);
-				this.listener=null;
+				listener=null;
 			}
 			super.release();
 		}

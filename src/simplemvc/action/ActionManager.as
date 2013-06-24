@@ -1,7 +1,6 @@
 package simplemvc.action
 {
 	import simplemvc.command.SimpleCommand;
-	import simplemvc.event.DispatcherManager;
 	import simplemvc.event.SimpleDispatcher;
 	import simplemvc.module.Module;
 

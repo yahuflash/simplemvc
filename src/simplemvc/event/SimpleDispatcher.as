@@ -2,12 +2,14 @@ package simplemvc.event
 {
     import flash.utils.Dictionary;
     import flash.utils.Proxy;
+    import flash.utils.flash_proxy;
     
     import simplemvc.common.IReusable;
     import simplemvc.common.ObjectPool;
     import simplemvc.common.simplemvc_internal;
     
 	use namespace simplemvc_internal;
+	use namespace flash_proxy;
     
 	/**
 	 * 事件派发对象
@@ -31,18 +33,41 @@ package simplemvc.event
         public function SimpleDispatcher(){}
         protected var eventListeners:Dictionary;
 		protected var eventDispatchedMap:Object;
+		
+		/**是否已经派发过某事件
+		 * @param 事件名*/
+		flash_proxy override function getProperty(name:*):*{
+			return hasDispatched(name.localName);
+		}
+		
+		/**xxx.complete = null
+		 * xxx.complete = listener
+		 * */
+		flash_proxy override function setProperty(name:*, value:*):void{
+			name = name.localName;
+			if (value == null){
+				removeListenersStartWith(name);
+			}else if (value is Function){
+				listenTo(name,value);
+			}
+		}
+		
+		/**xxx.complete(obj)*/
+		flash_proxy override function callProperty(name:*, ...args):*
+		{
+			dispatchWith(name.localName,(args.length > 0) ? args[0] : null);
+		}
         
-        /** Registers an event listener at a certain object. */
         public function listenTo(type:String, listener:Function, priority:int=0):void
         {
             if (eventListeners == null) eventListeners = new Dictionary();
             
             var listeners:Vector.<PriorityHandler> = eventListeners[type] as Vector.<PriorityHandler>;
             if (listeners == null)
-                eventListeners[type] = new <PriorityHandler>[PriorityHandler.create(listener,priority)];
+				listeners = eventListeners[type] = new <PriorityHandler>[PriorityHandler.create(listener,priority)];
             else if ( funcIndexInListeners(listener,listeners) < 0) // check for duplicates
-                listeners.push(listener);
-			listeners.sort(listeners);
+                listeners.push(PriorityHandler.create(listener,priority));
+			listeners.sort(sortFuncOfListeners);
         }
 		
 		public function listenTos(types:Array, listener:Function):void{
@@ -98,13 +123,8 @@ package simplemvc.event
 			}
 		}
         
-        /** Dispatches an event to all objects that have registered listeners for its type. 
-         *  If an event with enabled 'bubble' property is dispatched to a display object, it will 
-         *  travel up along the line of parents, until it either hits the root object or someone
-         *  stops its propagation manually. */
-        public function dispatch(event:SimpleEvent):void
-        {
-            if (eventListeners == null || !(event.getType in eventListeners))
+        public function dispatch(event:SimpleEvent):void {
+            if (eventListeners == null || !(event.getType() in eventListeners))
                 return; // no need to do anything
             event.target=this;
 			invokeEvent(event);                                  
@@ -143,7 +163,7 @@ package simplemvc.event
         protected function invokeEvent(event:SimpleEvent):Boolean
         {
             var listeners:Vector.<PriorityHandler> = eventListeners ?
-                eventListeners[event.getType] as Vector.<PriorityHandler> : null;
+                eventListeners[event.getType()] as Vector.<PriorityHandler> : null;
             var numListeners:int = listeners == null ? 0 : listeners.length;
             
             if (numListeners){
