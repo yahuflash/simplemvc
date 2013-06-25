@@ -1,4 +1,4 @@
 package simplemvc.common
 {
-	public namespace simplemvc_internal = "https://githum.com/simplemvc";
+	public namespace simplemvc_internal = "https://github.com/simplemvc";
 }

@@ -1,9 +1,10 @@
 package simplemvc.module
 {
 	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
+	
 	import simplemvc.parser.ModuleXMLData;
 	
-
 	public final class ModuleFactory{
 		
 		public static function createModule(moduleData:ModuleXMLData):IModule{

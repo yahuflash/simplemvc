@@ -25,41 +25,29 @@ package simplemvc.view
 			else this.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
-		private var appXMLData:ApplicationXMLData = new ApplicationXMLData();
-		private var modules:Vector.<IModule> = new Vector.<IModule>();
-		private var currentTime:Number;
+		protected var appXMLData:ApplicationXMLData = new ApplicationXMLData();
+		protected var modules:Vector.<IModule> = new Vector.<IModule>();
+		protected var currentTime:Number;
 		
 		public function startApplication():void{
-			
+			Director.sharedDirector().playing=true;
+			currentTime = getTimer();
+			stage.addEventListener(Event.ENTER_FRAME, eventHandler);
+			loaderInfo.addEventListener("uncaughtError",uncaughtErrorHandler);
 		}
 		
 		protected function init(e:Event=null):void{
 			if (e) e.currentTarget.removeEventListener(e.type, arguments.callee);
-			this.loaderInfo.addEventListener("uncaughtError",uncaughtErrorHandler);
-			
-			Director.sharedDirector().playing=true;
-			currentTime = getTimer();
-			stage.addEventListener(Event.ENTER_FRAME, eventHandler);
-			
 			URLLoaderUtil.load("app.xml",function(data:AsyncDataObject):void{
-//				trace("data.status",data.status);
 				if (data.status){
-//					trace("...");
-					//parseAppXMLData(XML(data.result));
+					appXMLData.parse(XML(data.result));
+					for each(var moduleData:ModuleXMLData in appXMLData.moduleDatas){
+						var module:IModule = ModuleFactory.createModule( moduleData );
+						modules.push( module );
+					}
+					startApplication();
 				}
 			});
-		}
-		
-		private function parseAppXMLData(data:XML):void{
-			appXMLData.parse(data);
-			parformAppSettings();
-		}
-		private function parformAppSettings():void{
-			for each(var moduleData:ModuleXMLData in appXMLData.moduleDatas){
-				var module:IModule = ModuleFactory.createModule( moduleData );
-				modules.push( module );
-			}
-			startApplication();
 		}
 		
 		protected function eventHandler(event:Event):void{
@@ -68,9 +56,8 @@ package simplemvc.view
 				case Event.ENTER_FRAME:
 				{
 					var newTime:Number = getTimer();
-					var delta:Number = newTime-currentTime;
+					Director.sharedDirector().update(newTime-currentTime);
 					currentTime = newTime;
-					Director.sharedDirector().update(delta);
 					break;
 				}
 					

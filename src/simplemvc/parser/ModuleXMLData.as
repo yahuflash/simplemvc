@@ -15,8 +15,8 @@ package simplemvc.parser
 		public function parse(data:XML):void{
 			name = data.@name;
 			definition = data.@definition;
-			for each(var settingItemName:XML in (data.setting as XML).children()){
-				setting[settingItemName] = data.setting[settingItemName].valueOf();
+			for each(var settingItemName:XML in data.setting.children()){
+				setting[settingItemName.localName()] = settingItemName.text();
 			}
 			for each(var eventXML:XML in data.events.event){
 				var eventData:EventXMLData = new EventXMLData();
