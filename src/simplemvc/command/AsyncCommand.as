@@ -21,20 +21,25 @@ package simplemvc.command
 			var command:AsyncCommand= ObjectPool.sharedObjectPool().retrieveNew(AsyncCommand) as AsyncCommand;
 			andOthers.unshift(command);
 			command.handler = HandlerObject.create(withFunc,andOthers);
+			command.released=false;
 			return command;
 		}
 		public function AsyncCommand(){}
 		internal var handler:HandlerObject;
 		
 		override public function execute():Object{
+			if (released) return this;
 			handler.call();
 			return this;
 		}
 		
 		override public function release():void{
 			handler.release();
-			ObjectPool.sharedObjectPool().pushReleased(this);
+			super.release();
 		}
 		
+		override public function clone():Object{
+			return AsyncCommand.create(handler.func,handler.args);
+		}
 	}
 }

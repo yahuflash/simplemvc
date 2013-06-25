@@ -12,9 +12,16 @@ package simplemvc.command
 		/**strict如果为false，表示指令在cancel，complete时都可以继续向下执行*/
 		public static function create(commands :Array,strict:Boolean=true):CirclineCommand{
 			var command:CirclineCommand = ObjectPool.sharedObjectPool().retrieveNew(CirclineCommand) as CirclineCommand;
-			command.commands = new Vector.<SimpleCommand>(commands);
+			command.commands = Vector.<SimpleCommand>(commands);
 			command.policy = SerialPolicy.create(strict);
+			command.released=false;
 			return command;
+		}
+		
+		override public function clone():Object{
+			var c:CirclineCommand = CirclineCommand.create([], policy.strict);
+			c.commands = commands.concat();
+			return c;
 		}
 	}
 }

@@ -12,12 +12,13 @@ package simplemvc.command
 		internal var policy :CommandPolicy;
 		
 		override public function execute():Object{
+			if (released) return this;
 			policy.start(Iterator.create(commands), this);
 			return this;
 		}
 		
 		override public function release():void{
-			commands.forEach(function(one:SimpleCommand):void{
+			commands.forEach(function(one:SimpleCommand,index:int=-1,vec:Vector.<SimpleCommand>=null):void{
 				one.release();
 			});
 			commands=null;
@@ -26,6 +27,6 @@ package simplemvc.command
 			super.release();
 		}
 		
-		
+			
 	}
 }

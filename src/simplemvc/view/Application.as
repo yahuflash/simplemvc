@@ -30,21 +30,22 @@ package simplemvc.view
 		private var currentTime:Number;
 		
 		public function startApplication():void{
-			Director.sharedDirector().playing=true;
 			
-			currentTime = getTimer();
-			stage.addEventListener(Event.ENTER_FRAME, eventHandler);
 		}
 		
 		protected function init(e:Event=null):void{
 			if (e) e.currentTarget.removeEventListener(e.type, arguments.callee);
 			this.loaderInfo.addEventListener("uncaughtError",uncaughtErrorHandler);
 			
+			Director.sharedDirector().playing=true;
+			currentTime = getTimer();
+			stage.addEventListener(Event.ENTER_FRAME, eventHandler);
+			
 			URLLoaderUtil.load("app.xml",function(data:AsyncDataObject):void{
 //				trace("data.status",data.status);
 				if (data.status){
 //					trace("...");
-					parseAppXMLData(XML(data.result));
+					//parseAppXMLData(XML(data.result));
 				}
 			});
 		}

@@ -18,12 +18,14 @@ package simplemvc.command
 		public static function create(withFunc :Function, withArgs:Array):SyncCommand{
 			var c:SyncCommand = ObjectPool.sharedObjectPool().retrieveNew(SyncCommand) as SyncCommand;
 			c.handler = HandlerObject.create(withFunc,withArgs);
+			c.released=false;
 			return c;
 		}
 		public function SyncCommand(){}
 		internal var handler:HandlerObject;
 		
 		override public function execute():Object{
+			if (released) return this;
 			handler.call();
 			DelayCallManager.sharedDelayCallManager().push( HandlerObject.create(complete) );
 			return this;
@@ -33,6 +35,11 @@ package simplemvc.command
 			handler.release();
 			super.release();
 		}
+		
+		override public function clone():Object{
+			return SyncCommand.create(handler.func,handler.args);
+		}
+		
 		
 	}
 }

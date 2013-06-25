@@ -18,7 +18,7 @@ package simplemvc.common
 		internal var source : Object;
 		
 		public function numItems():int{
-			return source.length;
+			return source ? source.length : 0;
 		}
 		
 		public function reset():void{
@@ -26,11 +26,11 @@ package simplemvc.common
 		}
 		
 		public function hasNext():Boolean{
-			return cursor < source.length;
+			return source && cursor < source.length;
 		}
 		
 		public function next():Object{
-			return source[cursor++];
+			return source ? source[cursor++] : null;
 		}
 		
 		public function release():void{

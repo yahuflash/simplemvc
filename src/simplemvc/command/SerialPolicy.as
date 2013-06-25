@@ -16,23 +16,27 @@ package simplemvc.command
 			return policy;
 		}
 		
-		override public function start(iterator :Iterator, promise:SimpleCommand):void
-		{
-			super.start(iterator,promise);
+		override public function start(withIterator :Iterator, promise:SimpleCommand):void{
+			super.start(withIterator,promise);
 			executeNextCommand();
 		}
 		
 		protected function executeNextCommand():void{
+			var c:SimpleCommand;
 			if (iterator.hasNext()){
+//				trace("start");
+				c = iterator.next() as SimpleCommand;
 				if (strict){
-					(iterator.next().execute() as SimpleCommand).listenTo(SimpleCommand.COMPLETE, command_onComplete);
+					c.listenTo(SimpleCommand.COMPLETE, command_onComplete);
 				}else{
-					(iterator.next().execute() as SimpleCommand).listenTos([SimpleCommand.COMPLETE,SimpleCommand.CANCEL], command_onComplete);				
+					c.listenTos([SimpleCommand.COMPLETE,SimpleCommand.CANCEL], command_onComplete);				
 				}
+				c.execute();
 			}
 		}
 		
 		protected function command_onComplete():void{
+//				trace("end");
 			if (++numComplete < numTotal){
 				executeNextCommand();
 			}else{

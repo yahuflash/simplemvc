@@ -1,9 +1,9 @@
 package simplemvc.command
 {
+	import simplemvc.common.IClonable;
 	import simplemvc.common.IReusable;
 	import simplemvc.common.simplemvc_internal;
 	import simplemvc.event.SimpleDispatcher;
-	import simplemvc.common.IClonable;
 	
 	use namespace simplemvc_internal;
 	
@@ -19,6 +19,7 @@ package simplemvc.command
 		public static const UNDO:String = "undo";
 		
 		public function SimpleCommand(){}
+		internal var released:Boolean=false;
 		
 		/**别名于execute*/
 		public function redo():Object{return execute();}
@@ -33,5 +34,11 @@ package simplemvc.command
 		public function undo():Object{dispatchWith(UNDO);return this;}
 		
 		public function clone():Object{return new SimpleCommand;}
+		
+		override public function release():void{
+			released = true;
+			super.release();
+		}
+		
 	}
 }

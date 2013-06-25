@@ -71,7 +71,7 @@ package simplemvc.event
         }
 		
 		public function listenTos(types:Array, listener:Function):void{
-			types.forEach(function(type:String):void{
+			types.forEach(function(type:String,index:int=-1,arr:Array=null):void{
 				listenTo(type,listener);
 			});
 		}

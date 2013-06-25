@@ -16,10 +16,13 @@ package simplemvc.command
 			return policy;
 		}
 		
-		override public function start(iterator :Iterator, promise:SimpleCommand):void{
-			super.start(iterator,promise);
+		override public function start(withIterator :Iterator, promise:SimpleCommand):void{
+			super.start(withIterator,promise);
+			var c:SimpleCommand;
 			while(iterator.hasNext()){
-				(iterator.next().execute() as SimpleCommand).listenTo(SimpleCommand.COMPLETE, command_onComplete);
+				c = iterator.next() as SimpleCommand;
+				c.listenTo(SimpleCommand.COMPLETE, command_onComplete);
+				c.execute();
 			}
 		}
 		
