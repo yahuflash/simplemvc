@@ -24,13 +24,8 @@ package simplemvc.module
 		public static const MODULE_DISPOSED:String = "moduleDisposed";
 		
 		public function Module(){}
-		protected var name:String="default";
-		
-		public function getName():String{return name;}
-		
-		public function getDefinination():String{
-			return getQualifiedClassName(this);
-		}
+		public var name:String="default";
+		public const definination:String = getQualifiedClassName(this);
 		
 		public function init(data:ModuleXMLData):void{
 			ModuleManager.sharedModuleManager().add(this);
@@ -38,11 +33,11 @@ package simplemvc.module
 		}
 		
 		public final function moduleDispatcher():SimpleEventDispatcher{
-			return DispatcherManager.sharedDispatcherManager().retrieveNew(getName());
+			return DispatcherManager.sharedDispatcherManager().retrieveNew(name);
 		}
 		
 		public function dispose():void{
-			SimpleEventDispatcher.sharedSimpleDispatcher().dispatchWith(MODULE_DISPOSED,{name:getName()});
+			SimpleEventDispatcher.sharedSimpleDispatcher().dispatchWith(MODULE_DISPOSED,{name:name});
 		}
 	}
 }

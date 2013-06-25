@@ -18,7 +18,7 @@ package simplemvc.module
 		public function retrieve(moduleName:String):Module{
 			var r:Module;
 			modules.some(function(m:Module,index:int=-1,vec:Vector.<Module>=null):Boolean{
-				if(m.getName() == moduleName){
+				if(m.name == moduleName){
 					r = m;
 					return true;
 				}

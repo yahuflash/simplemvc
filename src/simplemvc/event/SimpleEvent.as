@@ -18,13 +18,9 @@ package simplemvc.event
 		public function SimpleEvent(){}
 		
 		public var args :Object;
-		internal var target:SimpleEventDispatcher;
-		internal var type:String;
-		internal var stopsPropagation:Boolean;
-		
-		public function getType():String{ return type;}
-		public function getTarget():SimpleEventDispatcher { return target; }
-		public function hasStoppedPropagation():Boolean { return stopsPropagation; }
+		public var type:String;
+		public var target:SimpleEventDispatcher;
+		public var stopsPropagation:Boolean;
 		
 		public function stopPropagation():void { 
 			stopsPropagation=true; 

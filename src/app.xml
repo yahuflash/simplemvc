@@ -5,14 +5,19 @@
 			<setting>
 				<type>2-2</type>
 				<host>127.0.0.1</host>
-				<port>9001</port>
+				<port>18083</port>
 			</setting>
 			<events>
 				<event name="socketResponse">
-					<description>收到data数据时派发</description>
+					<description>![CDATA[
+					收到data数据时派发。args:{type:"2-2",data:{mid:int,body:ByteArray}}
+					]]</description>
 				</event>
 				<event name="socketRequest">
-					<description>请求发送数据包</description>
+					<description>![CDATA[
+					请求发送数据包。args:{type:"2-2",data:{mid:int,body:ByteArray}}。
+					type可选类型：（1）: 2-2; （2）: 0-0（代表直接发送bytes）
+					]]</description>
 				</event>
 			</events>
 		</module>

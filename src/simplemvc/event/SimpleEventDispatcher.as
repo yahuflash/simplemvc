@@ -125,7 +125,7 @@ package simplemvc.event
 		}
         
         public function dispatch(event:SimpleEvent):void {
-            if (eventListeners == null || !(event.getType() in eventListeners))
+            if (eventListeners == null || !(event.type in eventListeners))
                 return; // no need to do anything
             event.target=this;
 			invokeEvent(event);                                  
@@ -164,7 +164,7 @@ package simplemvc.event
         protected function invokeEvent(event:SimpleEvent):Boolean
         {
             var listeners:Vector.<PriorityHandler> = eventListeners ?
-                eventListeners[event.getType()] as Vector.<PriorityHandler> : null;
+                eventListeners[event.type] as Vector.<PriorityHandler> : null;
             var numListeners:int = listeners == null ? 0 : listeners.length;
             
             if (numListeners){
@@ -176,10 +176,10 @@ package simplemvc.event
 					else if (numArgs == 1) listener(event.args);
 					else if (numArgs == 2) listener(event.args,event);
 					
-					((eventDispatchedMap ||= {})[event.getType()] ||= {})[event.getType()]=true;
+					((eventDispatchedMap ||= {})[event.type] ||= {})[event.type]=true;
                 }
                 
-                return event.hasStoppedPropagation();
+                return event.stopsPropagation;
             }
             else{
                 return false;
