@@ -17,20 +17,20 @@ package simplemvc.event
 	 * @author sban
 	 * 
 	 */	
-    public class SimpleDispatcher extends Proxy implements IReusable, ISimpleDispatcher
+    public class SimpleEventDispatcher extends Proxy implements IReusable, ISimpleEventDispatcher
     {
-		private static var instance:SimpleDispatcher;
+		private static var instance:SimpleEventDispatcher;
 		/**全局的事件派发对象*/
-		public static function sharedSimpleDispatcher():SimpleDispatcher{
-			return (instance ||= new SimpleDispatcher);
+		public static function sharedSimpleDispatcher():SimpleEventDispatcher{
+			return (instance ||= new SimpleEventDispatcher);
 		}
 		
-		public static function create():SimpleDispatcher{
-			return ObjectPool.sharedObjectPool().retrieveNew( SimpleDispatcher ) as SimpleDispatcher;
+		public static function create():SimpleEventDispatcher{
+			return ObjectPool.sharedObjectPool().retrieveNew( SimpleEventDispatcher ) as SimpleEventDispatcher;
 		}
 		
         /** Creates an EventDispatcher. */
-        public function SimpleDispatcher(){}
+        public function SimpleEventDispatcher(){}
         protected var eventListeners:Dictionary;
 		protected var eventDispatchedMap:Object;
 		
@@ -46,7 +46,8 @@ package simplemvc.event
 		flash_proxy override function setProperty(name:*, value:*):void{
 			name = name.localName;
 			if (value == null){
-				removeListenersStartWith(name);
+				//clearListenersOf(name);
+				clearListenersStartWith(name);
 			}else if (value is Function){
 				listenTo(name,value);
 			}
@@ -114,11 +115,11 @@ package simplemvc.event
 			this.clearListenersOf();
 		}
 		
-		public function removeListenersStartWith(prefix:String):void{
+		public function clearListenersStartWith(prefix:String):void{
 			if (!prefix || !eventListeners) return;
 			for (var type:String in eventListeners){
 				if (type.indexOf(prefix) == 0){
-					delete eventDispatchedMap[type];
+					delete eventListeners[type];
 				}
 			}
 		}

@@ -2,7 +2,7 @@ package simplemvc.common
 {
 	import simplemvc.action.ActionFacade;
 	import simplemvc.command.CommandFacade;
-	import simplemvc.event.SimpleDispatcher;
+	import simplemvc.event.SimpleEventDispatcher;
 	import simplemvc.module.ModuleFacade;
 	
 	use namespace simplemvc_internal;

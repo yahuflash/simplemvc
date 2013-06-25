@@ -10,7 +10,7 @@ package simplemvc.event
 	 * @author sban
 	 * 
 	 */
-	public interface ISimpleDispatcher{
+	public interface ISimpleEventDispatcher{
 		/**添加事件监听*/
 		function listenTo(type:String, listener:Function, priority:int=0):void;
 		/**批量添加事件监听*/
@@ -27,9 +27,9 @@ package simplemvc.event
 		function clearListeners():void;
 		/**清除指定事件类型的所有监听*/
 		function clearListenersOf(type:String=null):void;
+		/**移除以指定字符串开始的事件监听，一般用于移除某个模块的监听*/
+		function clearListenersStartWith(eventPrefix:String):void;
 		/**是否已派发过指定事件*/
 		function hasDispatched(type:String):Boolean;
-		/**移除以指定字符串开始的事件监听，一般用于移除某个模块的监听*/
-		function removeListenersStartWith(eventPrefix:String):void;
 	}
 }

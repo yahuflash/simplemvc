@@ -18,12 +18,12 @@ package simplemvc.event
 		public function SimpleEvent(){}
 		
 		public var args :Object;
-		internal var target:SimpleDispatcher;
+		internal var target:SimpleEventDispatcher;
 		internal var type:String;
 		internal var stopsPropagation:Boolean;
 		
 		public function getType():String{ return type;}
-		public function getTarget():SimpleDispatcher { return target; }
+		public function getTarget():SimpleEventDispatcher { return target; }
 		public function hasStoppedPropagation():Boolean { return stopsPropagation; }
 		
 		public function stopPropagation():void { 
@@ -37,7 +37,7 @@ package simplemvc.event
 		}
 		
 		public function dispatchInGlobal():void{
-			SimpleDispatcher.sharedSimpleDispatcher().dispatch(this);
+			SimpleEventDispatcher.sharedSimpleDispatcher().dispatch(this);
 			release();
 		}
 		

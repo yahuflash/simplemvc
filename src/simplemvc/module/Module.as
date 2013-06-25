@@ -4,7 +4,7 @@ package simplemvc.module
 	
 	import simplemvc.common.IDisposable;
 	import simplemvc.event.DispatcherManager;
-	import simplemvc.event.SimpleDispatcher;
+	import simplemvc.event.SimpleEventDispatcher;
 	import simplemvc.parser.ModuleXMLData;
 	
 	/**
@@ -37,12 +37,12 @@ package simplemvc.module
 			name = data.name;
 		}
 		
-		public final function moduleDispatcher():SimpleDispatcher{
+		public final function moduleDispatcher():SimpleEventDispatcher{
 			return DispatcherManager.sharedDispatcherManager().retrieveNew(getName());
 		}
 		
 		public function dispose():void{
-			SimpleDispatcher.sharedSimpleDispatcher().dispatchWith(MODULE_DISPOSED,{name:getName()});
+			SimpleEventDispatcher.sharedSimpleDispatcher().dispatchWith(MODULE_DISPOSED,{name:getName()});
 		}
 	}
 }

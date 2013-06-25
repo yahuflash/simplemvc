@@ -1,6 +1,6 @@
 package simplemvc.common
 {
-	import simplemvc.event.SimpleDispatcher;
+	import simplemvc.event.SimpleEventDispatcher;
 	
 	/**
 	 * 动态的事件监听、派发对象
@@ -12,7 +12,7 @@ package simplemvc.common
 	 * @author sban
 	 * 
 	 */	
-	public final dynamic class Promise extends SimpleDispatcher implements IReusable
+	public final dynamic class Promise extends SimpleEventDispatcher implements IReusable
 	{
 		public static function create():Promise{
 			return ObjectPool.sharedObjectPool().retrieveNew(Promise) as Promise;

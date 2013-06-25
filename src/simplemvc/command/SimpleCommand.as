@@ -3,11 +3,11 @@ package simplemvc.command
 	import simplemvc.common.IClonable;
 	import simplemvc.common.IReusable;
 	import simplemvc.common.simplemvc_internal;
-	import simplemvc.event.SimpleDispatcher;
+	import simplemvc.event.SimpleEventDispatcher;
 	
 	use namespace simplemvc_internal;
 	
-	public class SimpleCommand extends SimpleDispatcher implements ICommand,IClonable,IReusable{
+	public class SimpleCommand extends SimpleEventDispatcher implements ICommand,IClonable,IReusable{
 		
 		//在子类中实现static create方法
 		

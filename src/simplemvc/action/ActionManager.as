@@ -2,7 +2,7 @@ package simplemvc.action
 {
 	import simplemvc.command.SimpleCommand;
 	import simplemvc.event.DispatcherManager;
-	import simplemvc.event.SimpleDispatcher;
+	import simplemvc.event.SimpleEventDispatcher;
 	import simplemvc.module.Module;
 
 	/**
@@ -19,7 +19,7 @@ package simplemvc.action
 		}
 		public function ActionManager(){
 			/**在一个模块释放时，释放其相关的Action*/
-			SimpleDispatcher.sharedSimpleDispatcher().listenTo(Module.MODULE_DISPOSED,function(args:Object):void{
+			SimpleEventDispatcher.sharedSimpleDispatcher().listenTo(Module.MODULE_DISPOSED,function(args:Object):void{
 				removeActionByModuleName(args.name);
 			});
 		}

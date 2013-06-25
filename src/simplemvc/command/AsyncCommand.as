@@ -7,6 +7,9 @@ package simplemvc.command
 	 * 导步调用方法的封装
 	 * 完成之后，在所调用方法中调用complete方法
 	 * 
+	 * 注意：如果使用该指令封装了一个同步方法，一定要在execute之前注册监听，
+	 * 否则在同步方法中直接调用complete，会导致接收不到完成事件。
+	 * 
 	 * @author sban
 	 * 
 	 */	

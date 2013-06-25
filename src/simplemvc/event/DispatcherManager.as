@@ -13,8 +13,8 @@ package simplemvc.event
 		protected const dispatcherMap:Dictionary = new Dictionary();
 		
 		/**如果不存在，则新建一个派发器*/
-		public function retrieveNew(moduleName:String="default"):SimpleDispatcher{
-			return (dispatcherMap[moduleName] ||= SimpleDispatcher.create());
+		public function retrieveNew(moduleName:String="default"):SimpleEventDispatcher{
+			return (dispatcherMap[moduleName] ||= SimpleEventDispatcher.create());
 		}
 		/**移除派发器，如在模块释放时调用，事件派发器被回收*/
 		public function remove(moduleName:String="default"):void{
