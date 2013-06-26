@@ -1,7 +1,5 @@
 package simplemvc.action
 {
-	import flash.events.Event;
-	
 	import simplemvc.common.ObjectPool;
 	import simplemvc.event.DispatcherManager;
 	import simplemvc.event.SimpleEvent;

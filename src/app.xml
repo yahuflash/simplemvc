@@ -3,20 +3,20 @@
 	<modules>
 		<module name="socket" definition="simplemvc.extension.socket::SocketModule">
 			<setting>
-				<type>2-2</type>
+				<type>2-4</type>
 				<host>127.0.0.1</host>
 				<port>18083</port>
 			</setting>
 			<events>
 				<event name="socketResponse">
 					<description>![CDATA[
-					收到data数据时派发。args:{type:"2-2",data:{mid:int,body:ByteArray}}
+					收到data数据时派发。args:{type:"2-4",data:{mid:int,body:ByteArray}}
 					]]</description>
 				</event>
 				<event name="socketRequest">
 					<description>![CDATA[
-					请求发送数据包。args:{type:"2-2",data:{mid:int,body:ByteArray}}。
-					type可选类型：（1）: 2-2; （2）: 0-0（代表直接发送bytes）
+					请求发送数据包。args:{type:"2-4",data:{mid:int,body:ByteArray}}。
+					type可选类型：（1）: 2-4; （2）: 0-0（代表直接发送bytes）
 					]]</description>
 				</event>
 			</events>

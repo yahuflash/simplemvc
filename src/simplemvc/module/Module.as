@@ -32,7 +32,7 @@ package simplemvc.module
 			name = data.name;
 		}
 		
-		public final function moduleDispatcher():SimpleEventDispatcher{
+		public final function dispatcher():SimpleEventDispatcher{
 			return DispatcherManager.sharedDispatcherManager().retrieveNew(name);
 		}
 		

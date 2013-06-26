@@ -5,6 +5,6 @@ package simplemvc.module
 
 	public interface IModule{
 		function init(data:ModuleXMLData):void;
-		function moduleDispatcher():SimpleEventDispatcher;
+		function dispatcher():SimpleEventDispatcher;
 	}
 }

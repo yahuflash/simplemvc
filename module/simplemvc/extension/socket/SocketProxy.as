@@ -6,6 +6,7 @@ package simplemvc.extension.socket
 	import flash.events.SecurityErrorEvent;
 	import flash.net.Socket;
 	import flash.utils.ByteArray;
+	import flash.utils.Endian;
 	
 	import simplemvc.common.IDisposable;
 	
@@ -19,6 +20,7 @@ package simplemvc.extension.socket
 	public class SocketProxy extends Socket implements IDisposable,ISocketProxy
 	{
 		public function SocketProxy(useZlib :Boolean = false){
+			endian = Endian.BIG_ENDIAN;
 			useZlib = useZlib;
 			addEventListener(IOErrorEvent.IO_ERROR, eventHandler);
 			addEventListener(SecurityErrorEvent.SECURITY_ERROR, eventHandler);
@@ -116,7 +118,8 @@ package simplemvc.extension.socket
 				case Event.CLOSE:
 				case Event.CONNECT:
 				{
-					//
+					trace("socket connected.");
+					SocketModule.sharedSocketModule().dispatcher().dispatchWith(SocketModule.SOCKET_CONNECTED);
 					break;
 				}
 				case ProgressEvent.SOCKET_DATA:
