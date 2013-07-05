@@ -13,21 +13,21 @@ package simplemvc.command
 	 * @author sban
 	 * 
 	 */	
-	public class AsyncCommand extends SimpleCommand
+	public class FuncCommand extends SimpleCommand
 	{
 		/**
 		 * withFunc example:function(c:SimpleCommand,...others):void
 		 * SimpleCommand调用withFunc方法时，默认将SimpleCommand作为第一个参数传入，
 		 * 当异步操作完成时，调用c.complete()方法完成指令的执行。
 		 * */
-		public static function create(withFunc :Function, andOthers:Array):AsyncCommand{
-			var command:AsyncCommand= ObjectPool.sharedObjectPool().retrieveNew(AsyncCommand) as AsyncCommand;
+		public static function create(withFunc :Function, andOthers:Array):FuncCommand{
+			var command:FuncCommand= ObjectPool.sharedObjectPool().retrieveNew(FuncCommand) as FuncCommand;
 			andOthers.unshift(command);
 			command.handler = HandlerObject.create(withFunc,andOthers);
 			command.released=false;
 			return command;
 		}
-		public function AsyncCommand(){}
+		public function FuncCommand(){}
 		internal var handler:HandlerObject;
 		
 		override public function execute():Object{
@@ -42,7 +42,7 @@ package simplemvc.command
 		}
 		
 		override public function clone():Object{
-			return AsyncCommand.create(handler.func,handler.args);
+			return FuncCommand.create(handler.func,handler.args);
 		}
 	}
 }

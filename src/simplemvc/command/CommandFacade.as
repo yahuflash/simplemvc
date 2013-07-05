@@ -1,15 +1,10 @@
 package simplemvc.command
 {
 	public final class CommandFacade{
-		public function CommandFacade()
-		{
-		}
+		public function CommandFacade(){}
 		
-		public function async(withFunc :Function, ...others):AsyncCommand{
-			return AsyncCommand.create(withFunc, others);
-		}
-		public function sync(withFunc :Function, ...withArgs):SyncCommand{
-			return SyncCommand.create(withFunc,withArgs);
+		public function func(withFunc :Function, ...others):FuncCommand{
+			return FuncCommand.create(withFunc, others);
 		}
 		public function parallel(strict:Boolean=true,...commands):ParallelCommand{
 			return ParallelCommand.create(commands,strict);
