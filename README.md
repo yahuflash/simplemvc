@@ -21,3 +21,7 @@ SimpleMVC框架代码设计细则：
 14. 除了在外观模式类中，不使用不定参数
 15. 不要使用组合模式实现接口，接口在SimpleMVC中只是一种规范
 16. 使用外观模式，封装功能API，隐藏开发者无需了解的细节及接口
+
+使用教程：
+======================
+*  [How to use SocketModule](https://github.com/simplemvc/simplemvc/wiki/SocketModule)
