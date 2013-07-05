@@ -53,9 +53,20 @@ package simplemvc.event
 			}
 		}
 		
-		/**xxx.complete(obj)*/
+		/**
+		 * dispatch event or add listener
+		 * 1,promise.complete(obj)
+		 * 2,promise.complete(function(){...})
+		 */
 		flash_proxy override function callProperty(name:*, ...args):*{
-			dispatchWith(name.localName,(args.length > 0) ? args[0] : null);
+			name = name.localName;
+			var arg :* = (args.length > 0) ? args[0] : null;
+			if (arg && (arg is Function)){
+				listenTo(name,arg);
+			}else{
+				dispatchWith(name,arg);
+			}
+			return this;
 		}
         
         public function listenTo(type:String, listener:Function, priority:int=0):void

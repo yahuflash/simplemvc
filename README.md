@@ -13,7 +13,7 @@ SimpleMVC框架代码设计细则：
 6. 在接口的方法定义中，如果返回自身，则使用Object类型
 7. 以功能“分类”决定包路径
 8. 事件名称在所用之类中定义，注释中注明参数，在项目中充许重复定义
-9. 不使用getXXX/setXXX方法
+9. 建议使用getXXX/setXXX方法
 10. 不在变量前使用下划线
 11. 不使用private关键字
 12. 参数名称使用动名式
@@ -25,3 +25,5 @@ SimpleMVC框架代码设计细则：
 使用教程：
 ======================
 *  [How to use SocketModule](https://github.com/simplemvc/simplemvc/wiki/SocketModule)
+*  [How to use Promise](https://github.com/simplemvc/simplemvc/wiki/Promise)
+
