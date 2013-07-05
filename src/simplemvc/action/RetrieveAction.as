@@ -31,14 +31,14 @@ package simplemvc.action
 		
 		override public function execute():Object{
 			DispatcherManager.sharedDispatcherManager().retrieveNew(moduleName)
-				.dispatchWith(requestEventType,requestArgs);
-			DispatcherManager.sharedDispatcherManager().retrieveNew(moduleName)
 				.listenTo(responseEventType,function(data:Object,e:SimpleEvent):void{
 					var numArgs:int = responseListener.length;
 					if (numArgs == 0) responseListener();
 					else if (numArgs == 1) responseListener(e.args);
 					else if (numArgs == 2) responseListener(e.args,e);
 				},responsePriority);
+			DispatcherManager.sharedDispatcherManager().retrieveNew(moduleName)
+				.dispatchWith(requestEventType,requestArgs);
 			return super.execute();
 		}
 		

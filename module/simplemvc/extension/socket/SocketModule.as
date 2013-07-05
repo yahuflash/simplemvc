@@ -57,7 +57,7 @@ package simplemvc.extension.socket
 					socket = new SocketProxy24();
 					host = data.setting.host;
 					port = parseInt(data.setting.port);
-					//socket.connect( data.setting.host,parseInt(data.setting.port) );
+					socket.connect( data.setting.host,parseInt(data.setting.port) );
 					break;
 				}
 					
@@ -75,7 +75,11 @@ package simplemvc.extension.socket
 			switch(e.type){
 				case SOCKET_CONNECT:
 				{
-					socket.connect( host,port );
+					if (!socket.connected){
+						socket.connect( host,port );
+					}else{
+						SocketModule.sharedSocketModule().dispatcher().dispatchWith(SocketModule.SOCKET_CONNECTED);
+					}
 					break;
 				}
 					
