@@ -27,4 +27,5 @@ SimpleMVC框架代码设计细则：
 *  [How to use SocketModule](https://github.com/simplemvc/simplemvc/wiki/SocketModule)
 *  [How to use Promise](https://github.com/simplemvc/simplemvc/wiki/Promise)
 *  [How to use Command](https://github.com/simplemvc/simplemvc/wiki/Command)
+*  [How to use Action](https://github.com/simplemvc/simplemvc/wiki/Action)
 
