@@ -1,11 +1,9 @@
 package
 {
-	import simplemvc.common.SimpleMVC;
-	import simplemvc.extension.socket.SocketModule;
+	import sban.simplemvc.core.SimpleFacade;
 
-	public var $:SimpleMVC = new SimpleMVC();
-	
-	{
-		simplemvc.extension.socket.SocketModule
-	}
+	/**
+	 * 全局的API快捷访问对象 
+	 */	
+	public const $:SimpleFacade = new SimpleFacade();
 }
