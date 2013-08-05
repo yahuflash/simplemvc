@@ -5,27 +5,12 @@ SimpleMVC是什么？
 
 SimpleMVC框架代码设计细则：
 ======================
-1. 不使用this关键字，除非在return关键字之后
-2. 接口不另继承接口
-3. 构造器留空，以static create(...)方法代替
-4. 不使用属性存取器（setter/getter）
-5. 不使用接口作为参数变量、成员变量的类型
-6. 在接口的方法定义中，如果返回自身，则使用Object类型
-7. 以功能“分类”决定包路径
-8. 事件名称在所用之类中定义，注释中注明参数，在项目中充许重复定义
-9. 建议使用getXXX/setXXX方法
-10. 不在变量前使用下划线
-11. 不使用private关键字
-12. 参数名称使用动名式
-13. 将“标签”属性印在类名上，常见的类后缀有Object,Util，Controller，View，Service，Manager，Model，Module等。常用的前缀有I（代表是接口）等
-14. 除了在外观模式类中，不使用不定参数
-15. 不要使用组合模式实现接口，接口在SimpleMVC中只是一种规范
-16. 使用外观模式，封装功能API，隐藏开发者无需了解的细节及接口
+1. 所有方法，如果是public公开的，则首字母大写
+2. 所有类属性，如果是public公开的，则首字母大写，如果是常量全部大写，以下线线分隔
+3. 函数参数首字母小写，私有类方法及属性首字母小写
 
 使用教程：
 ======================
-*  [How to use SocketModule](https://github.com/simplemvc/simplemvc/wiki/SocketModule)
+*  [How to use SocketProxy24](https://github.com/simplemvc/simplemvc/wiki/SocketProxy24)
 *  [How to use Promise](https://github.com/simplemvc/simplemvc/wiki/Promise)
-*  [How to use Command](https://github.com/simplemvc/simplemvc/wiki/Command)
-*  [How to use Action](https://github.com/simplemvc/simplemvc/wiki/Action)
 
