@@ -48,28 +48,19 @@ package sban.simplemvc.event
 		
 		public function DispatchEventWithTypeAndArgs(type:String,valueObjects:Array):SimpleEventDispatcher
 		{
-			// Broadcast to listeners.
-			var listToProcess:SimpleEventHandlerList = list;
-			if(listToProcess.NonEmpty)
-			{
-				while (listToProcess.NonEmpty)
-				{
-					if (listToProcess.Head.Type === type) 
-						executeHandler(listToProcess.Head, valueObjects);
-					listToProcess = listToProcess.Tail;
-				}
-			}
-			return this;
+			var event:SimpleEvent = new SimpleEvent(type);
+			event.Args = valueObjects;
+			return DispatchEvent(event);
 		}
 		
 		public function DispatchEvent(event:SimpleEvent):SimpleEventDispatcher{
 			var listToProcess:SimpleEventHandlerList = list;
 			if(listToProcess.NonEmpty)
 			{
-				while (listToProcess.NonEmpty)
+				while (listToProcess.NonEmpty && !event.StopedPropagation())
 				{
 					if (listToProcess.Head.Type === event.type) 
-						executeHandler(listToProcess.Head, event.Args);
+						executeHandler(event, listToProcess.Head, event.Args);
 					listToProcess = listToProcess.Tail;
 				}
 			}
@@ -99,31 +90,31 @@ package sban.simplemvc.event
 			return false; // Listener was already registered.
 		}
 		
-		private function executeHandler(handler:SimpleEventHandler, valueObjects:Array):void
+		private function executeHandler(event:SimpleEvent, handler:SimpleEventHandler, valueObjects:Array):void
 		{
 			if (handler.Once) this.RemoveEventListener(handler.Type,handler.Listener);
 			
-			// NOTE: simple ifs are faster than switch: http://jacksondunstan.com/articles/1007
-			const numValueObjects:int = valueObjects.length;
-			if (numValueObjects == 0)
+			const numFuncArgs:int = handler.Listener.length;
+			
+			if (numFuncArgs == 0)
 			{
 				handler.Listener();
-			}
-			else if (numValueObjects == 1)
+			}else if (numFuncArgs == 1)
 			{
-				handler.Listener(valueObjects[0]);
-			}
-			else if (numValueObjects == 2)
+				handler.Listener(event);
+			}else if (numFuncArgs >= 2)
 			{
-				handler.Listener(valueObjects[0], valueObjects[1]);
-			}
-			else if (numValueObjects == 3)
-			{
-				handler.Listener(valueObjects[0], valueObjects[1], valueObjects[2]);
-			}
-			else
-			{
-				handler.Listener.apply(null, valueObjects);
+				const numValueObjects:int = valueObjects.length;
+				if (numValueObjects == 1){
+					handler.Listener(event, valueObjects[0]);
+				}else if (numValueObjects == 2) {
+					handler.Listener(event, valueObjects[0], valueObjects[1]);					
+				}else if (numValueObjects == 3) {
+					handler.Listener(event, valueObjects[0], valueObjects[1], valueObjects[2]);					
+				}else{
+					valueObjects.unshift(event);
+					handler.Listener.apply(null, valueObjects);										
+				}
 			}
 		}
 	}
