@@ -13,4 +13,5 @@ SimpleMVC框架代码设计细则：
 ======================
 *  [How to use SocketProxy24](https://github.com/simplemvc/simplemvc/wiki/SocketProxy24)
 *  [How to use Promise](https://github.com/simplemvc/simplemvc/wiki/Promise)
+×  [How to user SimpleEventDispatcher](https://github.com/simplemvc/simplemvc/wiki/SimpleEventDispatcher)
 
