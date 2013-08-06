@@ -23,9 +23,6 @@ package sban.simplemvc.core
 			return eventDispatchedMap[name];
 		}
 		
-		/**xxx.complete = null
-		 * xxx.complete = listener
-		 * */
 		flash_proxy override function setProperty(name:*, value:*):void{
 			name = name.localName;
 			if (value == null){

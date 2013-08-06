@@ -1,6 +1,8 @@
 package sban.simplemvc.event
 {
-	internal final class SimpleEventHandlerList
+	import sban.simplemvc.interfaces.IPrintable;
+
+	internal final class SimpleEventHandlerList implements IPrintable
 	{
 		public static const NIL:SimpleEventHandlerList = new SimpleEventHandlerList(null, null);
 
@@ -31,116 +33,84 @@ package sban.simplemvc.event
 		public var Tail:SimpleEventHandlerList;
 		public var NonEmpty:Boolean = false;
 
-		public function Prepend(slot:SimpleEventHandler):SimpleEventHandlerList
+		private function prepend(slot:SimpleEventHandler):SimpleEventHandlerList
 		{
 			return new SimpleEventHandlerList(slot, this);
-		}
-
-		public function Append(slot:SimpleEventHandler):SimpleEventHandlerList
-		{
-			if (!slot) return this;
-			if (!NonEmpty) return new SimpleEventHandlerList(slot);
-			// Special case: just one slot currently in the list.
-			if (Tail == NIL) 
-				return new SimpleEventHandlerList(slot).Prepend(Head);
-			
-			// The list already has two or more slots.
-			// We have to build a new list with cloned items because they are immutable.
-			const wholeClone:SimpleEventHandlerList = new SimpleEventHandlerList(Head);
-			var subClone:SimpleEventHandlerList = wholeClone;
-			var current:SimpleEventHandlerList = Tail;
-
-			while (current.NonEmpty)
-			{
-				subClone = subClone.Tail = new SimpleEventHandlerList(current.Head);
-				current = current.Tail;
-			}
-			// Append the new slot last.
-			subClone.Tail = new SimpleEventHandlerList(slot);
-			return wholeClone;
-		}		
+		}	
 		
-		public function InsertWithPriority(slot:SimpleEventHandler):SimpleEventHandlerList
+		public function InsertWithPriority(handler:SimpleEventHandler):SimpleEventHandlerList
 		{
-			if (!NonEmpty) return new SimpleEventHandlerList(slot);
+			if (!NonEmpty) return new SimpleEventHandlerList(handler);
 
-			const priority:int = slot.Priority;
+			const priority:int = handler.Priority;
 			// Special case: new slot has the highest priority.
-			if (priority > this.Head.Priority) return Prepend(slot);
+			if (priority > this.Head.Priority && handler.Type == Head.Type) return prepend(handler);
 
-			const wholeClone:SimpleEventHandlerList = new SimpleEventHandlerList(Head);
-			var subClone:SimpleEventHandlerList = wholeClone;
+			const result:SimpleEventHandlerList = new SimpleEventHandlerList(Head);
+			var next:SimpleEventHandlerList = result;
 			var current:SimpleEventHandlerList = Tail;
 
 			// Find a slot with lower priority and go in front of it.
-			while (current.NonEmpty)
-			{
-				if (priority > current.Head.Priority)
-				{
-					subClone.Tail = current.Prepend(slot);
-					return wholeClone; 
+			while (current.NonEmpty){
+				if (priority > current.Head.Priority && handler.Type == current.Head.Type){
+					next.Tail = current.prepend(handler);
+					return result; 
 				}			
-				subClone = subClone.Tail = new SimpleEventHandlerList(current.Head);
+				next = next.Tail = new SimpleEventHandlerList(current.Head);
 				current = current.Tail;
 			}
 
 			// Slot has lowest priority.
-			subClone.Tail = new SimpleEventHandlerList(slot);
-			return wholeClone;
+			next.Tail = new SimpleEventHandlerList(handler);
+			return result;
 		}
 		
 		public function FilterNotWithTypeAndListener(type:String,listener:Function):SimpleEventHandlerList
 		{
-			if (!NonEmpty || listener == null) return this;
-
-			if (listener == Head.Listener && type == Head.Type) return Tail;
-
-			// The first item wasn't a match so the filtered list will contain it.
-			const wholeClone:SimpleEventHandlerList = new SimpleEventHandlerList(Head);
-			var subClone:SimpleEventHandlerList = wholeClone;
-			var current:SimpleEventHandlerList = Tail;
+			if (!NonEmpty) return this;
 			
-			while (current.NonEmpty)
-			{
-				if (current.Head.Listener == listener && current.Head.Type == type)
-				{
-					// Splice out the current head.
-					subClone.Tail = current.Tail;
-					return wholeClone;
+			var current:SimpleEventHandlerList = this;//用于控制循环的当前对象引用
+			var next:SimpleEventHandlerList;//采用的下一个对象引用
+			while(current.NonEmpty) {
+				if (current.Head.Type != type && current.Head.Listener != listener) {
+					if (!result){
+						const result:SimpleEventHandlerList = new SimpleEventHandlerList(current.Head);
+						next = result;
+					}else{
+						next.Tail = new SimpleEventHandlerList(current.Head);
+						next = next.Tail; 
+					}
 				}
-				
-				subClone = subClone.Tail = new SimpleEventHandlerList(current.Head);
 				current = current.Tail;
 			}
-
-			// The listener was not found so this list is unchanged.
-			return this;
+			
+			if (!result) return NIL;
+			
+			return result;
 		}
 		
 		public function FilterNotWithType(type:String):SimpleEventHandlerList
 		{
-			if (type == Head.Type) return Tail;
+			if (!NonEmpty) return this;
 			
-			// The first item wasn't a match so the filtered list will contain it.
-			const wholeClone:SimpleEventHandlerList = new SimpleEventHandlerList(Head);
-			var subClone:SimpleEventHandlerList = wholeClone;
-			var current:SimpleEventHandlerList = Tail;
-			
-			while (current.NonEmpty)
-			{
-				if (current.Head.Type == type)
-				{
-					// Splice out the current head.
-					subClone.Tail = current.Tail;
-					return wholeClone;
+			var current:SimpleEventHandlerList = this;//用于控制循环的当前对象引用
+			var next:SimpleEventHandlerList;//采用的下一个对象引用
+			while(current.NonEmpty) {
+				if (current.Head.Type != type) {
+					if (!result){
+						const result:SimpleEventHandlerList = new SimpleEventHandlerList(current.Head);
+						next = result;
+					}else{
+						next.Tail = new SimpleEventHandlerList(current.Head);
+						next = next.Tail; 
+					}
 				}
-				
-				subClone = subClone.Tail = new SimpleEventHandlerList(current.Head);
 				current = current.Tail;
 			}
 			
-			// The listener was not found so this list is unchanged.
-			return this;
+			if (!result) return NIL;
+
+			return result;
 		}
 
 		public function FindWith(type:String, listener:Function):SimpleEventHandler
@@ -156,5 +126,20 @@ package sban.simplemvc.event
 
 			return null;
 		}
+		
+		public function Print():void{
+			$.Print("List:");
+			if (!NonEmpty) return $.Print("Empty");
+			if (Tail == NIL) return  $.Print("Nil");
+			
+			var result:uint = 0;
+			var list:SimpleEventHandlerList = this;
+			
+			while (list.NonEmpty){
+				list.Head.Print();
+				list = list.Tail;
+			}
+		}
+		
 	}
 }

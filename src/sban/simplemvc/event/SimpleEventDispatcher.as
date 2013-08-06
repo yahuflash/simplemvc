@@ -1,6 +1,8 @@
 package sban.simplemvc.event
 {
-	public final class SimpleEventDispatcher
+	import sban.simplemvc.interfaces.IPrintable;
+
+	public final class SimpleEventDispatcher implements IPrintable
 	{
 		private static var instance:SimpleEventDispatcher;
 		public static function SharedInstance():SimpleEventDispatcher{
@@ -75,8 +77,8 @@ package sban.simplemvc.event
 		{
 			if (registrationPossible(type,listener))
 			{
-				const newSlot:SimpleEventHandler = new SimpleEventHandler(type, listener, once, priority);
-				list = list.Prepend(newSlot);
+				const handler:SimpleEventHandler = new SimpleEventHandler(type, listener, once, priority);
+				list = list.InsertWithPriority(handler);
 			}
 		}
 
@@ -119,5 +121,10 @@ package sban.simplemvc.event
 				}
 			}
 		}
+		
+		public function Print():void{
+			list.Print();
+		}
+		
 	}
 }

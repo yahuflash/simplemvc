@@ -1,6 +1,8 @@
 package sban.simplemvc.event 
 {
-	internal final class SimpleEventHandler
+	import sban.simplemvc.interfaces.IPrintable;
+
+	internal final class SimpleEventHandler implements IPrintable
 	{
 		public function SimpleEventHandler(Type:String, listener:Function, once:Boolean = false, priority:int = 0)
 		{
@@ -14,6 +16,11 @@ package sban.simplemvc.event
 		public var Once:Boolean = false;
 		public var Priority:int = 0;
 		public var Type:String;
-
+		
+		public function Print():void{
+			$.Print("Type:",Type,"Priority:",Priority,"Once:",Once, "Listener:", Listener);
+		}
+		
+		
 	}
 }
