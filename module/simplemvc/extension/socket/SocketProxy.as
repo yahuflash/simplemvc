@@ -119,7 +119,7 @@ package simplemvc.extension.socket
 				case Event.CONNECT:
 				{
 					trace("socket connected.");
-					SocketModule.sharedSocketModule().dispatcher().dispatchWith(SocketModule.SOCKET_CONNECTED);
+					SocketModule.sharedSocketModule().dispatcher().dispatchEventWith(SocketModule.SOCKET_CONNECTED);
 					break;
 				}
 				case ProgressEvent.SOCKET_DATA:

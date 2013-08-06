@@ -67,8 +67,8 @@ package simplemvc.extension.socket
 				}
 			}
 			
-			SocketModule.sharedSocketModule().dispatcher().listenTo(SOCKET_REQUEST, socketRequestHandler);
-			SocketModule.sharedSocketModule().dispatcher().listenTo(SOCKET_CONNECT, socketHandler);
+			SocketModule.sharedSocketModule().dispatcher().addEventListener(SOCKET_REQUEST, socketRequestHandler);
+			SocketModule.sharedSocketModule().dispatcher().addEventListener(SOCKET_CONNECT, socketHandler);
 		}
 		
 		private function socketHandler(args:Object, e:SimpleEvent):void{
@@ -78,7 +78,7 @@ package simplemvc.extension.socket
 					if (!socket.connected){
 						socket.connect( host,port );
 					}else{
-						SocketModule.sharedSocketModule().dispatcher().dispatchWith(SocketModule.SOCKET_CONNECTED);
+						SocketModule.sharedSocketModule().dispatcher().dispatchEventWith(SocketModule.SOCKET_CONNECTED);
 					}
 					break;
 				}

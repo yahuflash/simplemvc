@@ -3,7 +3,7 @@ package simplemvc.extension.socket
 	import flash.utils.ByteArray;
 	
 	/**
-	 * 以4(message id)+4(data.length)+data的方式设计数据包
+	 * 以2字节(message id)+4字节(data.length)+data的方式设计数据包
 	 *  
 	 * @author sban
 	 * 
@@ -50,7 +50,7 @@ package simplemvc.extension.socket
 					bytes.readBytes(r, 0, len);
 					r.position=0;
 					
-					SocketModule.sharedSocketModule().dispatcher().dispatchWith(SocketModule.SOCKET_RESPONSE,{type:SocketModule.SOCKET_PACKAGE_TYPE_2_4,data:{mid:mid,body:r}});
+					SocketModule.sharedSocketModule().dispatcher().dispatchEventWith(SocketModule.SOCKET_RESPONSE,{type:SocketModule.SOCKET_PACKAGE_TYPE_2_4,data:{mid:mid,body:r}});
 				}
 			}
 			return r;
