@@ -111,6 +111,8 @@ package sban.simplemvc.event
 					handler.Listener(event, valueObjects[0], valueObjects[1]);					
 				}else if (numValueObjects == 3) {
 					handler.Listener(event, valueObjects[0], valueObjects[1], valueObjects[2]);					
+				}else if (numValueObjects == 4) {
+					handler.Listener(event, valueObjects[0], valueObjects[1], valueObjects[2], valueObjects[3]);					
 				}else{
 					valueObjects.unshift(event);
 					handler.Listener.apply(null, valueObjects);										
