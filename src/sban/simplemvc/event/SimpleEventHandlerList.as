@@ -1,8 +1,9 @@
 package sban.simplemvc.event
 {
+	import sban.simplemvc.interfaces.IDisposable;
 	import sban.simplemvc.interfaces.IPrintable;
 
-	internal final class SimpleEventHandlerList implements IPrintable
+	internal final class SimpleEventHandlerList implements IPrintable, IDisposable
 	{
 		public static const NIL:SimpleEventHandlerList = new SimpleEventHandlerList(null, null);
 
@@ -126,6 +127,14 @@ package sban.simplemvc.event
 
 			return null;
 		}
+		
+		public function Dispose():void
+		{
+			// TODO Auto Generated method stub
+			Tail = NIL;
+			NonEmpty = false;
+		}
+		
 		
 		public function Print():void{
 			$.Print("List:");

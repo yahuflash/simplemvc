@@ -1,8 +1,9 @@
 package sban.simplemvc.event
 {
+	import sban.simplemvc.interfaces.IDisposable;
 	import sban.simplemvc.interfaces.IPrintable;
 
-	public final class SimpleEventDispatcher implements IPrintable
+	public final class SimpleEventDispatcher implements IPrintable, IDisposable
 	{
 		private static var instance:SimpleEventDispatcher;
 		public static function SharedInstance():SimpleEventDispatcher{
@@ -98,6 +99,7 @@ package sban.simplemvc.event
 			
 			const numFuncArgs:int = handler.Listener.length;
 			
+			event.dispatcher = this;
 			if (numFuncArgs == 0)
 			{
 				handler.Listener();
@@ -121,6 +123,13 @@ package sban.simplemvc.event
 				}
 			}
 		}
+		
+		public function Dispose():void
+		{
+			// TODO Auto Generated method stub
+			list.Dispose();
+		}
+		
 		
 		public function Print():void{
 			list.Print();

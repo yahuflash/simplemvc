@@ -5,10 +5,11 @@ package sban.simplemvc.core
 	import flash.utils.flash_proxy;
 	
 	import sban.simplemvc.event.SimpleEventDispatcher;
+	import sban.simplemvc.interfaces.IDisposable;
 	
 	use namespace flash_proxy;
 	
-	public dynamic final class Promise extends Proxy
+	public dynamic final class Promise extends Proxy implements IDisposable
 	{
 		public function Promise()
 		{
@@ -16,11 +17,12 @@ package sban.simplemvc.core
 		}
 		
 		private var dispacher:SimpleEventDispatcher = new SimpleEventDispatcher();
-		private var eventDispatchedMap:Dictionary = new Dictionary();
+		private var eventDispatchedMap:Dictionary = null;
 		
 		flash_proxy override function getProperty(name:*):*{
+			var map:Dictionary = (eventDispatchedMap ||= new Dictionary);
 			name = name.localName;
-			return eventDispatchedMap[name];
+			return map[name];
 		}
 		
 		flash_proxy override function setProperty(name:*, value:*):void{
@@ -38,11 +40,20 @@ package sban.simplemvc.core
 			if (arg && (arg is Function)){
 				dispacher.AddEventListener(name, arg);
 			}else{
-				eventDispatchedMap[name] = args;
+				var map:Dictionary = (eventDispatchedMap ||= new Dictionary);
+				map[name] = args;
 				dispacher.DispatchEventWithTypeAndArgs(name, args);
 			}
 			return this;
 		}
+		
+		public function Dispose():void
+		{
+			// TODO Auto Generated method stub
+			dispacher.Dispose();
+			eventDispatchedMap = null;
+		}
+		
 		
 	}
 }

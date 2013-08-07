@@ -9,6 +9,8 @@ package sban.simplemvc.event
 	 */	
 	public final class SimpleEvent extends Event
 	{
+		public static const COMPLETE:String = "complete";
+		
 		public function SimpleEvent(type:String, ...args)
 		{
 			super(type);
@@ -17,6 +19,12 @@ package sban.simplemvc.event
 		
 		public var Args:Array;
 		private var stopedPropagation:Boolean = false;
+		internal var dispatcher:SimpleEventDispatcher;
+		
+		/**返回派发器对象*/
+		public function Dispatcher():SimpleEventDispatcher {
+			return dispatcher;
+		}
 		
 		/**是否已停止事件流的继续派发*/
 		public function StopedPropagation():Boolean {
@@ -25,22 +33,6 @@ package sban.simplemvc.event
 		/**停止事件流的继续派发*/
 		public function StopPropagation():void {
 			stopedPropagation = true;
-			super.stopPropagation();
-			super.stopImmediatePropagation();
-		}
-		
-		override public function stopImmediatePropagation():void
-		{
-			// TODO Auto Generated method stub
-			stopedPropagation = true;
-			super.stopImmediatePropagation();
-		}
-		
-		override public function stopPropagation():void
-		{
-			// TODO Auto Generated method stub
-			stopedPropagation = true;
-			super.stopPropagation();
 		}
 		
 	}
